@@ -1,0 +1,25 @@
+.option {
+  width: 40px;
+  height: 40px;
+  padding: 12px;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  position: absolute;
+
+  &:hover {
+    background-color: lightblue;
+  }
+
+  @for $i from 1 through 9 {
+    &:nth-of-type(#{$i}) {
+      left: 10 * $i + vw;
+      top: 10 * $i + vh;
+    }
+  }
+}

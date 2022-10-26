@@ -1,0 +1,22 @@
+nav {
+  padding: 8px;
+  display: flex;
+  grid-gap: 8px;
+
+  a {
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 6px;
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      background-color: lightblue;
+    }
+
+    &.active {
+      background-color: darkcyan;
+      color: white;
+    }
+  }
+}
