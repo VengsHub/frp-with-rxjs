@@ -20,7 +20,7 @@ export class DragAndDropFrpDirective {
       )
     )
   );
-  // sequencing is clearly readable
+  // sequencing is readable clearly
 
   private readonly unsubscribe = new Subject<void>();
 

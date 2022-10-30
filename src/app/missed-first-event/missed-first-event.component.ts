@@ -13,18 +13,15 @@ import {
   styleUrls: ['./missed-first-event.component.scss']
 })
 export class MissedFirstEventComponent implements OnInit, OnDestroy {
-  myObservable: Observable<number>;
-  myObservable2: Observable<number>;
-
   private readonly unsubscribe = new Subject<void>();
 
-  constructor() {
-    this.myObservable = interval(1000).pipe(takeUntil(this.unsubscribe));
-    this.myObservable2 = interval(2000).pipe(shareReplay(1), takeUntil(this.unsubscribe));
-    // .share() resets observable when there are no subscribers left
-  }
+  // observables should be declared here or in constructor -> to ensure them existing before the UI
+  myObservable = interval(1000).pipe(takeUntil(this.unsubscribe));
+  myObservable2 = interval(2000).pipe(shareReplay(1), takeUntil(this.unsubscribe));
+  // .share() resets observable when there are no subscribers left
 
-  // streams müssen vor UI-Initialisierung stehen
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.myObservable.pipe(combineLatestWith(this.myObservable2)).subscribe(e => console.log('merge', e));
