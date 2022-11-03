@@ -1,0 +1,30 @@
+:host {
+  margin-top: 200px;
+  display: flex;
+  justify-content: space-evenly;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    .list {
+      width: 168px;
+      display: flex;
+      flex-direction: column;
+      border: 2px solid grey;
+      border-radius: 4px;
+
+      span {
+        padding: 4px;
+
+        &:hover {
+          background-color: lightblue;
+          cursor: pointer;
+        }
+      }
+
+      span + span {
+        border-top: 1px solid grey;
+      }
+    }
+  }
+}

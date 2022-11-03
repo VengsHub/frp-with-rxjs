@@ -7,6 +7,7 @@ import { ThreadingIssuesComponent } from './threading-issues/threading-issues.co
 import { LeakingCallbacksComponent } from './leaking-callbacks/leaking-callbacks.component';
 import { AccidentalRecursionComponent } from './accidental-recursion/accidental-recursion.component';
 import { UnpredictableOrderComponent } from './unpredictable-order/unpredictable-order.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/unpredictable-order', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'leaking-callbacks', component: LeakingCallbacksComponent},
   {path: 'accidental-recursion', component: AccidentalRecursionComponent},
   {path: 'drag-and-drop', component: DragAndDropComponent},
+  {path: 'autocomplete', component: AutocompleteComponent},
   {path: '**', redirectTo: ''}
 ];
 

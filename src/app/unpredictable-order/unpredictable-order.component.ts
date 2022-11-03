@@ -7,16 +7,18 @@ import { combineLatestWith, filter, interval, map, Observable, Subject, takeUnti
   styleUrls: ['./unpredictable-order.component.scss']
 })
 export class UnpredictableOrderComponent implements OnInit, OnDestroy {
-  myObservable: Observable<number>;
-
   private readonly unsubscribe = new Subject<void>();
+
+  readonly myObservable = interval(1000).pipe(takeUntil(this.unsubscribe));
+  readonly mergedObservable = this.myObservable.pipe(combineLatestWith(this.myObservable.pipe(filter(e => e % 2 !== 0))));
 
   constructor() {
     this.myObservable = interval(1000).pipe(takeUntil(this.unsubscribe));
   }
 
   ngOnInit(): void {
-    this.myObservable.pipe(combineLatestWith(this.myObservable.pipe(filter(e => e % 2 !== 0)))).subscribe(e => console.log('merge', e));
+    this.myObservable.subscribe(e => console.log('my observable', e))
+    this.mergedObservable.subscribe(e => console.log('merged', e))
   }
 
   ngOnDestroy() {

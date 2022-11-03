@@ -1,0 +1,16 @@
+<div class="container">
+  <label>FRP</label>
+  <input type="text" #autocomplete>
+  <div *ngIf="filteredList | async as results" class="list">
+    <span *ngFor="let result of results" (click)="setText(result)">{{result}}</span>
+  </div>
+</div>
+
+
+<div class="container">
+  <label>Pure Pipe</label>
+  <input type="text" [(ngModel)]="text">
+  <div *ngIf="countries | autocomplete:text as filteredCountries" class="list">
+    <span *ngFor="let country of filteredCountries" (click)="setText(country)">{{country}}</span>
+  </div>
+</div>

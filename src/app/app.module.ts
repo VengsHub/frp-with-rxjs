@@ -12,6 +12,9 @@ import { DragAndDropComponent } from './drag-and-drop/drag-and-drop.component';
 import { DragAndDropFrpDirective } from './directives/drag-and-drop-frp.directive';
 import { DragAndDropDirective } from './directives/drag-and-drop.directive';
 import { UnpredictableOrderComponent } from './unpredictable-order/unpredictable-order.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { AutocompletePipe } from './pipes/autocomplete.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,11 +27,14 @@ import { UnpredictableOrderComponent } from './unpredictable-order/unpredictable
     LeakingCallbacksComponent,
     MessyStateComponent,
     ThreadingIssuesComponent,
-    UnpredictableOrderComponent
+    UnpredictableOrderComponent,
+    AutocompleteComponent,
+    AutocompletePipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
