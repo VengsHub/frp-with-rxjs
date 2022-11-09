@@ -14,13 +14,10 @@ export class DragAndDropFrpDirective {
     switchMap(() =>
       this.mousemoveEvent.pipe(
         tap(event => this.dragMove(event)),
-        takeUntil(this.mouseupEvent.pipe(
-          tap(DragAndDropFrpDirective.drop)
-        ))
+        takeUntil(this.mouseupEvent)
       )
     )
   );
-  // sequencing is readable clearly
 
   private readonly unsubscribe = new Subject<void>();
 
@@ -29,13 +26,8 @@ export class DragAndDropFrpDirective {
   }
 
   dragMove(event: MouseEvent): void {
-    console.log('moving');
     this.elementRef.nativeElement.style.left = event.clientX + 'px';
     this.elementRef.nativeElement.style.top = event.clientY + 'px';
-  }
-
-  static drop(event: MouseEvent) {
-    console.log('dropped', event)
   }
 
   ngOnDestroy() {

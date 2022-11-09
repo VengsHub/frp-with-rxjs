@@ -6,26 +6,18 @@ import { DOCUMENT } from '@angular/common';
   selector: '[appDragAndDrop]'
 })
 export class DragAndDropDirective implements OnDestroy {
-  private readonly element: HTMLElement;
+  private readonly mousedownEvent = fromEvent<MouseEvent>(this.elementRef.nativeElement, 'mousedown');
+  private readonly mousemoveEvent = fromEvent<MouseEvent>(this.document, 'mousemove');
+  private readonly mouseupEvent = fromEvent<MouseEvent>(this.document, 'mouseup');
+
   private dragging = false;
 
   private readonly unsubscribe = new Subject();
 
-  constructor(@Inject(DOCUMENT) private document: Document,
-              private elementRef: ElementRef) {
-    this.element = elementRef.nativeElement as HTMLElement;
-    this.initEventListeners();
-  }
-
-  initEventListeners(): void {
-    const mousedownEvent = fromEvent<MouseEvent>(this.element, 'mousedown');
-    const mousemoveEvent = fromEvent<MouseEvent>(document, 'mousemove');
-    const mouseupEvent = fromEvent<MouseEvent>(document, 'mouseup');
-
-    // 3000 elements -> 3 * 3000 subscriptions -> inefficient (FRP 1 * 3000)
-    mousedownEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragStart(event));
-    mousemoveEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragMove(event));
-    mouseupEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragEnd(event));
+  constructor(@Inject(DOCUMENT) private document: Document, private elementRef: ElementRef) {
+    this.mousedownEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragStart(event));
+    this.mousemoveEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragMove(event));
+    this.mouseupEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragEnd(event));
   }
 
   dragStart(event: MouseEvent): void {
@@ -35,8 +27,8 @@ export class DragAndDropDirective implements OnDestroy {
   // extra handling necessary
   dragMove(event: MouseEvent): void {
     if (this.dragging) {
-      this.element.style.left = event.clientX + 'px';
-      this.element.style.top = event.clientY + 'px';
+      this.elementRef.nativeElement.style.left = event.clientX + 'px';
+      this.elementRef.nativeElement.style.top = event.clientY + 'px';
     }
   }
 
