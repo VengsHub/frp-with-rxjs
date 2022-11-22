@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import {
-  BehaviorSubject,
-  debounceTime, filter,
+  debounceTime,
   fromEvent,
   map,
-  Observable,
+  Observable, of,
   shareReplay,
   Subject,
   takeUntil
@@ -20,8 +19,7 @@ export class AutocompleteComponent implements AfterViewInit, OnDestroy {
   @ViewChild('autocomplete') autocomplete?: ElementRef;
 
   readonly countries = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Republic of Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden'];
-  private readonly _text = new BehaviorSubject<string>('');
-  public readonly $text: Observable<string> = this._text.asObservable();
+  public $text: Observable<string> = of('');
 
   readonly filteredList = this.$text.pipe(
     debounceTime(1000),
@@ -38,15 +36,10 @@ export class AutocompleteComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (this.autocomplete) {
-      fromEvent<InputEvent>(this.autocomplete.nativeElement, 'input').subscribe(event => {
-        const text = (event.target as HTMLInputElement).value;
-        this._text.next(text);
-      });
+      this.$text = fromEvent<InputEvent>(this.autocomplete.nativeElement, 'input').pipe(
+        map(event => (event.target as HTMLInputElement).value)
+      );
     }
-  }
-
-  setText(newText: string): void {
-    this._text.next(newText);
   }
 
   ngOnDestroy() {
