@@ -3,7 +3,7 @@ import {
   debounceTime,
   fromEvent,
   map,
-  Observable, of,
+  Observable,
   shareReplay,
   Subject,
   takeUntil
@@ -19,27 +19,21 @@ export class AutocompleteComponent implements AfterViewInit, OnDestroy {
   @ViewChild('autocomplete') autocomplete?: ElementRef;
 
   readonly countries = ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Republic of Cyprus', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden'];
-  public $text: Observable<string> = of('');
+  frpAutocomplete?: FrpAutocomplete;
 
-  readonly filteredList = this.$text.pipe(
-    debounceTime(1000),
-    map(text => text.length > 2 ? this.countries.filter(country => country.toLowerCase().includes(text)) : []),
-    // observable gets called on initialization without shareReplay
-    shareReplay(1)
-  );
-
-  private readonly unsubscribe = new Subject<void>();
+  private unsubscribe = new Subject<void>();
 
   constructor() {
-    this.filteredList.pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
   ngAfterViewInit(): void {
     if (this.autocomplete) {
-      this.$text = fromEvent<InputEvent>(this.autocomplete.nativeElement, 'input').pipe(
-        map(event => (event.target as HTMLInputElement).value)
-      );
+      this.frpAutocomplete = new FrpAutocomplete(this.autocomplete.nativeElement, this.unsubscribe, this.countries);
     }
+  }
+
+  setText(text: string): void {
+    // setting in frp would need a behavioursubject
   }
 
   ngOnDestroy() {
@@ -47,4 +41,22 @@ export class AutocompleteComponent implements AfterViewInit, OnDestroy {
   }
 
   text = '';
+}
+
+// easier testable than pipes in a html context
+class FrpAutocomplete {
+  private readonly $text: Observable<string> = fromEvent<InputEvent>(this.autocomplete, 'input').pipe(
+    map(event => (event.target as HTMLInputElement).value)
+  );
+
+  readonly filteredList: Observable<string[]> = this.$text.pipe(
+    debounceTime(1000),
+    map(text => text.length > 2 ? this.countries.filter(country => country.toLowerCase().includes(text)) : []),
+    // observable gets called on initialization without shareReplay
+    shareReplay(1)
+  );
+
+  constructor(private autocomplete: HTMLElement, private unsubscribe: Observable<void>, private countries: string[]) {
+    this.filteredList.pipe(takeUntil(unsubscribe)).subscribe();
+  }
 }

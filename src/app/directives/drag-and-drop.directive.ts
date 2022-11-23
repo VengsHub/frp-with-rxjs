@@ -24,7 +24,6 @@ export class DragAndDropDirective implements OnDestroy {
     this.dragging = true;
   }
 
-  // extra handling necessary
   dragMove(event: MouseEvent): void {
     if (this.dragging) {
       this.elementRef.nativeElement.style.left = event.clientX + 'px';
