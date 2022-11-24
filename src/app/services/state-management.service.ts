@@ -5,18 +5,22 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class StateManagementService {
-  private happy = true;
+  // state
+  private _happy2 = ':)';
+  get happy2(): string {
+    return this._happy2;
+  }
+  set happy2(newHappy2: string) {
+    this._happy2 = newHappy2;
+  }
 
+  // rxjs
   private _happy = new BehaviorSubject<string>(':)');
   public $happy: Observable<string> = this._happy.asObservable();
 
   constructor() { }
 
-  changeState(newState: boolean): void {
-    this.happy = newState;
-  }
-
-  changeObservableState(newState: string): void {
+  changeState(newState: string): void {
     this._happy.next(newState);
   }
 }

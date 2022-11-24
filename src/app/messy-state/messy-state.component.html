@@ -1,6 +1,8 @@
-<button (click)="changeState(!happy)">{{happy ? ':)' : ':('}}</button>
+<button (click)="stateManagementService.happy2 = stateManagementService.happy2 === ':)' ? ':(' : ':)'">
+  {{stateManagementService.happy2 ? ':)' : ':('}}
+</button>
 
 <button *ngIf="stateManagementService.$happy | async as value"
-        (click)="stateManagementService.changeObservableState(value === ':)' ? ':(' : ':)')">
+        (click)="stateManagementService.changeState(value === ':)' ? ':(' : ':)')">
   {{value}}
 </button>

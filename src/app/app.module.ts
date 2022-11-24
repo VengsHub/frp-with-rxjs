@@ -15,6 +15,7 @@ import { UnpredictableOrderComponent } from './unpredictable-order/unpredictable
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { AutocompletePipe } from './pipes/autocomplete.pipe';
 import { FormsModule } from '@angular/forms';
+import { DragAndDropTemplateDirective } from './directives/drag-and-drop-template.directive';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     ThreadingIssuesComponent,
     UnpredictableOrderComponent,
     AutocompleteComponent,
-    AutocompletePipe
+    AutocompletePipe,
+    DragAndDropTemplateDirective
   ],
   imports: [
     BrowserModule,
