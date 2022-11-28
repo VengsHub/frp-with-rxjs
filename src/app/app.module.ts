@@ -16,6 +16,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { AutocompletePipe } from './pipes/autocomplete.pipe';
 import { FormsModule } from '@angular/forms';
 import { DragAndDropTemplateDirective } from './directives/drag-and-drop-template.directive';
+import { DragAndDropFrp2Directive } from './directives/drag-and-drop-frp2.directive';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DragAndDropTemplateDirective } from './directives/drag-and-drop-templat
     DragAndDropComponent,
     DragAndDropDirective,
     DragAndDropFrpDirective,
+    DragAndDropFrp2Directive,
     MissedFirstEventComponent,
     AccidentalRecursionComponent,
     LeakingCallbacksComponent,

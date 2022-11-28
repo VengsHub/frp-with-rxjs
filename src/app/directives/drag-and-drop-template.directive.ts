@@ -13,7 +13,7 @@ export class DragAndDropTemplateDirective {
   private readonly unsubscribe = new Subject<void>();
 
   constructor(@Inject(DOCUMENT) private document: Document, private elementRef: ElementRef) {
-    this.mousedownEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => console.log('mouse down on element'));
+    // this.mousemoveEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragMove(event));
   }
 
   dragMove(event: MouseEvent): void {

@@ -1,27 +1,37 @@
 import { Directive, ElementRef, Inject } from '@angular/core';
 import {
+  filter,
   fromEvent,
+  map,
+  mergeWith,
+  startWith,
   Subject,
   switchMap,
+  take,
   takeUntil,
+  withLatestFrom
 } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
-  selector: '[appDragAndDropFrp]'
+  selector: '[appDragAndDropFrp2]'
 })
-export class DragAndDropFrpDirective {
+export class DragAndDropFrp2Directive {
   private readonly mousedownEvent = fromEvent<MouseEvent>(this.elementRef.nativeElement, 'mousedown');
   private readonly mousemoveEvent = fromEvent<MouseEvent>(this.document, 'mousemove');
   private readonly mouseupEvent = fromEvent<MouseEvent>(this.document, 'mouseup');
 
-  private readonly dragAndDrop = this.mousedownEvent.pipe(
-    switchMap(() =>
-      this.mousemoveEvent.pipe(
-        takeUntil(this.mouseupEvent)
-      )
-    )
+  private readonly dragging = this.mousedownEvent.pipe(
+    mergeWith(this.mouseupEvent),
+    map(event => event.type === 'mousedown'),
+    startWith(false)
   );
+
+  private readonly dragAndDrop = this.mousemoveEvent.pipe(
+    withLatestFrom(this.dragging),
+    filter(([_event, dragging]) => dragging),
+    map(([event, _dragging]) => event)
+  )
 
   private readonly unsubscribe = new Subject<void>();
 
