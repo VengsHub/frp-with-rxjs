@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Inject } from '@angular/core';
-import { fromEvent, Subject, takeUntil } from 'rxjs';
+import { filter, fromEvent, mergeWith, Subject, takeUntil } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
@@ -9,6 +9,11 @@ export class DragAndDropTemplateDirective {
   private readonly mousedownEvent = fromEvent<MouseEvent>(this.elementRef.nativeElement, 'mousedown');
   private readonly mousemoveEvent = fromEvent<MouseEvent>(this.document, 'mousemove');
   private readonly mouseupEvent = fromEvent<MouseEvent>(this.document, 'mouseup');
+
+  private readonly shiftKeyEvent = fromEvent<KeyboardEvent>(this.document, 'keydown').pipe(
+    mergeWith(fromEvent<KeyboardEvent>(this.document, 'keyup')),
+    filter(event => event.key === 'Shift')
+  );
 
   private readonly unsubscribe = new Subject<void>();
 
