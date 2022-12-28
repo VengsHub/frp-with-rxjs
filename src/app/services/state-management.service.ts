@@ -16,7 +16,7 @@ export class StateManagementService {
 
   // rxjs
   private _happy = new BehaviorSubject<string>(':)');
-  public $happy: Observable<string> = this._happy.asObservable();
+  public happy$: Observable<string> = this._happy.asObservable();
 
   constructor() { }
 

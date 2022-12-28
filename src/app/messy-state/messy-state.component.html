@@ -2,7 +2,7 @@
   {{stateManagementService.happy2 ? ':)' : ':('}}
 </button>
 
-<button *ngIf="stateManagementService.$happy | async as value"
+<button *ngIf="stateManagementService.happy$ | async as value"
         (click)="stateManagementService.changeState(value === ':)' ? ':(' : ':)')">
   {{value}}
 </button>

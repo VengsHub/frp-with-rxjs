@@ -45,11 +45,11 @@ export class AutocompleteComponent implements AfterViewInit, OnDestroy {
 
 // easier testable than pipes in a html context
 class FrpAutocomplete {
-  private readonly $text: Observable<string> = fromEvent<InputEvent>(this.autocomplete, 'input').pipe(
+  private readonly text$: Observable<string> = fromEvent<InputEvent>(this.autocomplete, 'input').pipe(
     map(event => (event.target as HTMLInputElement).value)
   );
 
-  readonly filteredList: Observable<string[]> = this.$text.pipe(
+  readonly filteredList: Observable<string[]> = this.text$.pipe(
     debounceTime(1000),
     map(text => text.length > 2 ? this.countries.filter(country => country.toLowerCase().includes(text)) : []),
     // observable gets called on initialization without shareReplay
