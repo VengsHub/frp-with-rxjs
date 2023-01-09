@@ -6,21 +6,19 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class StateManagementService {
   // state
-  private _happy2 = ':)';
-  get happy2(): string {
-    return this._happy2;
+  private _state = ':)';
+  get state(): string {
+    return this._state;
   }
-  set happy2(newHappy2: string) {
-    this._happy2 = newHappy2;
+  set state(newState: string) {
+    this._state = newState;
   }
 
   // rxjs
-  private _happy = new BehaviorSubject<string>(':)');
-  public happy$: Observable<string> = this._happy.asObservable();
-
-  constructor() { }
+  private _stateRxjs = new BehaviorSubject<string>(':)');
+  public state$: Observable<string> = this._stateRxjs.asObservable();
 
   changeState(newState: string): void {
-    this._happy.next(newState);
+    this._stateRxjs.next(newState);
   }
 }
