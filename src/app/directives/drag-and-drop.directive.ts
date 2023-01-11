@@ -14,14 +14,12 @@ export class DragAndDropDirective implements OnDestroy {
     mergeWith(fromEvent<KeyboardEvent>(this.document, 'keyup')),
     filter(event => event.key === 'Shift')
   );
+  private shiftPressed = false;
+  shiftPress(event: KeyboardEvent): void {
+    this.shiftPressed = event.type === 'keydown';
+  }
 
   private dragging = false;
-
-  private shiftPressed = false;
-
-  shiftPress(down: boolean): void {
-    this.shiftPressed = down;
-  }
 
   private readonly unsubscribe = new Subject();
 
@@ -29,7 +27,7 @@ export class DragAndDropDirective implements OnDestroy {
     this.mousedownEvent.pipe(takeUntil(this.unsubscribe)).subscribe(() => this.dragStart());
     this.mousemoveEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.dragMove(event));
     this.mouseupEvent.pipe(takeUntil(this.unsubscribe)).subscribe(() => this.dragEnd());
-    this.shiftKeyEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.shiftPress(event.type === 'keydown'));
+    this.shiftKeyEvent.pipe(takeUntil(this.unsubscribe)).subscribe(event => this.shiftPress(event));
   }
 
   dragStart(): void {

@@ -8,21 +8,18 @@ import { BehaviorSubject, Observable, take } from 'rxjs';
 })
 export class AccidentalRecursionComponent implements OnInit {
 
-  private _state = new BehaviorSubject<string>('sunny');
-  public $state: Observable<string> = this._state.asObservable();
+  private _state = new BehaviorSubject<number>(1);
+  public $state: Observable<number> = this._state.asObservable();
 
   constructor() { }
 
   ngOnInit(): void {
-    this.$state.pipe(take(20)).subscribe(state => {
-      console.log('state update', state);
-      setTimeout(() => this._state.next(state === 'sunny' ? 'rainy' : 'sunny'));
+    this.$state.subscribe(state => {
+      if (state % 2 === 0) {
+        this._state.next(2 * state);
+      }
     });
 
-    // show pipe concept, does it give an error?
-
-    setTimeout(() => {
-      this._state.next('rainy');
-    }, 2000);
+    setTimeout(() => {this._state.next(4)}, 1000);
   }
 }

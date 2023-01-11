@@ -27,6 +27,7 @@ export class DragAndDropFrpDirective {
     switchMap(() =>
       this.mousemoveEvent.pipe(
         withLatestFrom(this.shiftPressed),
+        map(([event, shift]) => this.dragMove(event, shift)),
         takeUntil(this.mouseupEvent)
       )
     )
@@ -35,7 +36,7 @@ export class DragAndDropFrpDirective {
   private readonly unsubscribe = new Subject<void>();
 
   constructor(@Inject(DOCUMENT) private document: Document, private elementRef: ElementRef) {
-    this.dragAndDrop.pipe(takeUntil(this.unsubscribe)).subscribe(([event, shift]) => this.dragMove(event, shift));
+    this.dragAndDrop.pipe(takeUntil(this.unsubscribe)).subscribe();
   }
 
   dragMove(event: MouseEvent, shiftPressed: boolean): void {
